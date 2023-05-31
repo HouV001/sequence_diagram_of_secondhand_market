@@ -1,0 +1,51 @@
+@startuml
+actor Buyer
+participant "Login Page" as LoginPage
+participant "Buyer Page" as BuyerPage
+participant "Cart" as Cart
+
+
+participant "System" as System
+
+
+
+actor Seller
+
+group Buyer actor
+Buyer -> LoginPage: Input Information
+LoginPage -> System: Verify Login
+Buyer -> BuyerPage: Browse and select products
+BuyerPage -> System: Request to read product information
+Buyer -> Cart: Add item to cart
+Cart -> System: Modify user shopping cart information
+Buyer -> BuyerPage: Proceed to checkout
+BuyerPage -> System: Send checkout request
+Buyer -> BuyerPage: Provide shipping address and payment details
+BuyerPage -> System: Send address and payment details
+Buyer -> BuyerPage: Confirm receipt of order
+BuyerPage -> System: Send confirmation message
+Buyer -> BuyerPage: Provide feedback or comments on the purchased item
+BuyerPage -> System: Add users to provide feedback or comments on purchased items
+end
+
+group System behavior
+Buyer -> System: Submit order request
+System -> Seller: Send order information
+Seller -> System: Confirm order receipt
+System -> Buyer: send order confirmation
+Seller -> System: Send package readiness notification
+System -> Buyer: send package tracking information
+Seller -> System: Respond to buyer's comments
+System -> Buyer: Send seller response
+Buyer -> System: Provide product feedback or reviews
+System -> Seller: send buyer feedback or comments
+end
+
+Group seller behavior
+Seller -> System: Add products to the System
+Seller -> System: Receive and process orders
+Seller -> System: Prepare and send packages
+Seller -> System: Responding to buyer comments
+end
+
+@enduml
