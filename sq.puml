@@ -28,6 +28,23 @@ Buyer -> BuyerPage: Provide feedback or comments on the purchased item
 BuyerPage -> System: Add users to provide feedback or comments on purchased items
 end
 
+group Seller actor
+Seller -> SellerLoginPage: Input information
+SellerLoginPage -> System: Verify login
+Seller -> ProductManager: Add products
+ProductManager -> System: Modify product manager information
+Seller -> OrderManager: View orders
+OrderManager -> System: Request to display order information and receipts
+Seller -> ShippingService: Dispatch
+ShippingService -> System: Send dispatch request and update order status
+Seller -> ShippingService: Track shipments
+ShippingService -> System: Request an update on the shipment status
+Seller -> FeedbackManager: Check the product feedbacks
+FeedbackManager -> System: Show the product feedbacks
+Seller -> PaymentProcessor: Receive payment
+PaymentProcessor -> System: Request to show the details of the payment flow
+end
+
 group System behavior
 Buyer -> System: Submit order request
 System -> Seller: Send order information
@@ -41,11 +58,11 @@ Buyer -> System: Provide product feedback or reviews
 System -> Seller: send buyer feedback or comments
 end
 
-Group seller behavior
-Seller -> System: Add products to the System
-Seller -> System: Receive and process orders
-Seller -> System: Prepare and send packages
-Seller -> System: Responding to buyer comments
-end
+'group seller behavior
+'Seller -> System: Add products to the System
+'Seller -> System: Receive and process orders
+'Seller -> System: Prepare and send packages
+'Seller -> System: Responding to buyer comments
+'end
 
 @enduml
