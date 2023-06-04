@@ -1,14 +1,19 @@
 @startuml
 actor Buyer
-participant "Login Page" as LoginPage
-participant "Buyer Page" as BuyerPage
-participant "Cart" as Cart
+participant LoginPage
+participant BuyerPage
+participant DeliveryAddressManager
+participant Cart
 
 
 participant "System" as System
 
-
-
+participant SellerLoginPage
+participant ProductManager
+participant OrderManager
+participant ShippingService
+participant FeedbackManager
+participant PaymentProcessor
 actor Seller
 
 group Buyer actor
@@ -20,13 +25,35 @@ Buyer -> Cart: Add item to cart
 Cart -> System: Modify user shopping cart information
 Buyer -> BuyerPage: Proceed to checkout
 BuyerPage -> System: Send checkout request
-Buyer -> BuyerPage: Provide shipping address and payment details
-BuyerPage -> System: Send address and payment details
+Buyer -> DeliveryAddressManager: Provide delivery address and payment details
+DeliveryAddressManager -> System: Send address and payment details
 Buyer -> BuyerPage: Confirm receipt of order
 BuyerPage -> System: Send confirmation message
 Buyer -> BuyerPage: Provide feedback or comments on the purchased item
 BuyerPage -> System: Add users to provide feedback or comments on purchased items
 end
+
+
+group System behavior
+
+System -> LoginPage: Send verify login information
+System -> BuyerPage: Send product information
+System -> Cart: Modify cart information
+System -> DeliveryAddressManager: Add address and payment details success
+System -> BuyerPage: Send order confirmation
+System -> BuyerPage: Send comment success information
+
+System -> SellerLoginPage: Send verify login information
+System -> ProductManager: Modify product manager information
+System -> OrderManager: Order information and receipts
+System -> ShippingService: Dispatch request and update order status
+System -> ShippingService: Update on the shipment status
+System -> FeedbackManager: Show the product feedbacks
+System -> PaymentProcessor: Show the details of the payment flow
+
+
+end
+
 
 group Seller actor
 Seller -> SellerLoginPage: Input information
@@ -44,20 +71,6 @@ FeedbackManager -> System: Show the product feedbacks
 Seller -> PaymentProcessor: Receive payment
 PaymentProcessor -> System: Request to show the details of the payment flow
 end
-
-group System behavior
-Buyer -> System: Submit order request
-System -> Seller: Send order information
-Seller -> System: Confirm order receipt
-System -> Buyer: send order confirmation
-Seller -> System: Send package readiness notification
-System -> Buyer: send package tracking information
-Seller -> System: Respond to buyer's comments
-System -> Buyer: Send seller response
-Buyer -> System: Provide product feedback or reviews
-System -> Seller: send buyer feedback or comments
-end
-
 'group seller behavior
 'Seller -> System: Add products to the System
 'Seller -> System: Receive and process orders
